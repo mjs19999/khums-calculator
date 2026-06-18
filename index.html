@@ -342,7 +342,7 @@
             const nameInput = document.createElement('input');
             nameInput.type = 'text';
             nameInput.className = 'asset-name';
-            nameInput.value = isGhost ? `مصدر ${sourceCounter}` : '';
+            nameInput.value = isGhost ? `أصول ${sourceCounter}` : '';
             
             const amountInput = document.createElement('input');
             amountInput.type = 'number';
@@ -370,7 +370,7 @@
                     
                     // Remove if both fields are empty, or amount is empty and name is default
                     if ((nameVal === '' && amountVal === '') || 
-                        (amountVal === '' && nameVal.startsWith('مصدر '))) {
+                        (amountVal === '' && nameVal.startsWith('أصول '))) {
                         
                         row.style.opacity = '0';
                         row.style.transform = 'translateY(-10px)';
