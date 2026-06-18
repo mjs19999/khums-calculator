@@ -7,18 +7,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #046A38; /* Deep Emerald Green */
+            --primary-color: #046A38;
             --primary-light: #0a8a4d;
-            --accent-color: #D4AF37; /* Soft Gold */
+            --accent-color: #D4AF37;
             --bg-color: #f8f9fa;
             --card-bg: #ffffff;
             --text-main: #2b2b2b;
-            --text-muted: #6c757d;
-            --border-light: #e9ecef;
-            --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
+            --text-muted: #888888;
+            --border-light: #cccccc;
+            --danger-bg: #ffebee;
+            --danger-color: #d32f2f;
+            --shadow-sm: 0 4px 6px rgba(0,0,0,0.05);
             --shadow-md: 0 8px 24px rgba(4, 106, 56, 0.08);
             --shadow-lg: 0 12px 32px rgba(4, 106, 56, 0.15);
-            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --transition: all 0.25s ease;
         }
 
         * {
@@ -32,43 +34,26 @@
             background-color: var(--bg-color);
             color: var(--text-main);
             line-height: 1.6;
-            padding: 2rem 1rem;
+            padding: 1rem 0.5rem;
             display: flex;
             justify-content: center;
         }
 
         .container {
             width: 100%;
-            max-width: 600px;
+            max-width: 500px;
         }
 
-        .header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .header h1 {
-            color: var(--primary-color);
-            font-size: 2.2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .header p {
-            color: var(--text-muted);
-            font-size: 1rem;
-        }
+        .header { text-align: center; margin-bottom: 2rem; }
+        .header h1 { color: var(--primary-color); font-size: 2.2rem; margin-bottom: 0.5rem; }
+        .header p { color: var(--text-muted); font-size: 1rem; }
 
         .card {
             background-color: var(--card-bg);
-            border-radius: 16px;
-            padding: 2rem;
+            border-radius: 12px;
+            padding: 1.2rem;
             margin-bottom: 1.5rem;
             box-shadow: var(--shadow-sm);
-            transition: var(--transition);
-        }
-
-        .card:hover {
-            box-shadow: var(--shadow-md);
         }
 
         .section-title {
@@ -76,59 +61,13 @@
             font-weight: 700;
             color: var(--primary-color);
             margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
         }
 
-        /* Inputs General */
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 1rem;
-        }
-
-        .input-group label {
-            font-size: 0.95rem;
-            color: var(--text-main);
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-        }
-
-        .main-input {
+        /* حاوية الإدخال */
+        .input-container {
+            position: relative;
+            margin-bottom: 1.2rem;
             width: 100%;
-            padding: 1rem;
-            font-size: 1.2rem;
-            border: 2px solid var(--border-light);
-            border-radius: 10px;
-            background-color: #fafafa;
-            transition: var(--transition);
-            color: var(--text-main);
-        }
-
-        .main-input:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            background-color: #fff;
-            box-shadow: 0 0 0 4px rgba(4, 106, 56, 0.1);
-        }
-
-        /* Dynamic Asset Rows */
-        .assets-container {
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-        }
-
-        .asset-row {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-            padding: 0.8rem;
-            border-radius: 10px;
-            background: #fff;
-            border: 1px solid var(--border-light);
-            transition: var(--transition);
             animation: slideIn 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
         }
 
@@ -137,59 +76,123 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .asset-row:focus-within {
-            border-color: var(--primary-light);
-            box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05);
-        }
-
-        .asset-name, .asset-amount {
-            border: none;
-            background: transparent;
-            font-size: 1.05rem;
+        /* حقول الإدخال الأساسية */
+        .main-input {
+            width: 100%;
+            padding: 1rem 0.8rem;
+            padding-left: 2.5rem; /* مساحة لزر الحذف على اليسار */
+            font-size: 1rem;
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            background-color: transparent;
             color: var(--text-main);
             outline: none;
             transition: var(--transition);
         }
 
-        .asset-name {
-            flex-grow: 1;
-            font-weight: 500;
+        .main-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(4, 106, 56, 0.1);
         }
 
-        .asset-amount {
-            width: 120px;
-            text-align: left;
-            font-weight: 700;
-            color: var(--primary-color);
-            border-bottom: 2px solid transparent;
+        /* الليبل الثابت */
+        .static-label {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 1rem;
+            pointer-events: none;
+            transition: var(--transition);
+            transform-origin: right center;
+            background-color: transparent;
+            padding: 0;
+            margin: 0;
         }
 
-        .asset-amount:focus {
-            border-bottom: 2px solid var(--accent-color);
-        }
-
-        .asset-amount::placeholder {
-            color: #ced4da;
-            font-weight: 400;
-        }
-
-        /* Ghost Row Styling */
-        .ghost-row {
-            opacity: 0.4;
-            border: 1px dashed var(--border-light);
-            background: transparent;
+        /* الليبل القابل للتعديل */
+        input.floating-label {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 1.0rem;
+            transition: var(--transition);
+            transform-origin: right center;
+            background-color: transparent;
+            border: none;
+            outline: none;
+            font-family: inherit;
+            width: auto;
+            max-width: 80%; 
+            pointer-events: auto;
             cursor: text;
         }
-        
-        .ghost-row:hover {
-            opacity: 0.6;
+
+        /* تصغير ورفع الليبل */
+        .main-input:focus ~ .static-label,
+        .main-input:not(:placeholder-shown) ~ .static-label,
+        .main-input:focus ~ input.floating-label,
+        .main-input:not(:placeholder-shown) ~ input.floating-label,
+        input.floating-label:focus {
+            top: 0;
+            transform: translateY(-50%) scale(0.85); /* تصغير الخط كما طلبنا سابقًا */
+            background-color: var(--card-bg);
+            padding: 0 3px;
+            color: var(--primary-color);
         }
 
-        .ghost-row .asset-amount {
-            color: var(--text-muted);
+        input.floating-label:focus {
+            border-bottom: 1px dashed var(--primary-color);
+            color: var(--primary-light);
         }
 
-        /* Results Card */
+        /* زر الحذف السالب */
+        .delete-btn {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--danger-bg);
+            color: var(--danger-color);
+            border: none;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            font-size: 1.4rem;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            opacity: 0;
+            pointer-events: none; /* غير قابل للضغط وهو مخفي */
+            z-index: 10;
+        }
+
+        .delete-btn:hover {
+            background: #ffcdd2;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        /* إظهار زر الحذف فقط إذا لم يكن الصف شبحًا، ولم يكن الصف الأول */
+        .input-container:not(.ghost-row):not(.first-row) .delete-btn {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* صف الشبح */
+        .ghost-row { opacity: 0.4; transition: opacity 0.3s; }
+        .ghost-row:hover { opacity: 0.6; }
+        .ghost-row .main-input {
+            border: 1px dashed var(--border-light);
+            background-color: #fafafa;
+        }
+
+        /* البطاقة النهائية */
         .results-card {
             background: linear-gradient(135deg, var(--primary-color), #034f2a);
             color: white;
@@ -197,78 +200,15 @@
             position: relative;
             overflow: hidden;
         }
+        .result-row { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        .result-row:last-child { border-bottom: none; margin-top: 0.5rem; padding-top: 1.5rem; }
+        .result-label { font-size: 1.1rem; opacity: 0.9; }
+        .result-value { font-size: 1.3rem; font-weight: 700; color: var(--accent-color); }
+        .khums-highlight { font-size: 1.8rem; color: #fff; background: var(--accent-color); padding: 0.3rem 1rem; border-radius: 8px; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3); }
+        .no-khums-msg { text-align: center; font-size: 1.3rem; font-weight: 700; color: var(--accent-color); padding: 1rem; display: none; animation: fadeIn 0.5s ease forwards; }
 
-        .results-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 60%);
-            pointer-events: none;
-        }
-
-        .result-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .result-row:last-child {
-            border-bottom: none;
-            margin-top: 0.5rem;
-            padding-top: 1.5rem;
-        }
-
-        .result-label {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-
-        .result-value {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--accent-color);
-            transition: var(--transition);
-        }
-
-        .khums-highlight {
-            font-size: 1.8rem;
-            color: #fff;
-            background: var(--accent-color);
-            padding: 0.3rem 1rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
-        }
-
-        .no-khums-msg {
-            text-align: center;
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--accent-color);
-            padding: 1rem;
-            display: none;
-            animation: fadeIn 0.5s ease forwards;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .hidden-details {
-            transition: var(--transition);
-        }
-
-        @media (max-width: 480px) {
-            .asset-row { padding: 0.6rem; }
-            .asset-name, .asset-amount { font-size: 0.95rem; }
-            .asset-amount { width: 90px; }
-            .header h1 { font-size: 1.8rem; }
-        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @media (max-width: 480px) { .main-input { font-size: 1.05rem; padding-left: 2.5rem; } .header h1 { font-size: 1.8rem; } }
     </style>
 </head>
 <body>
@@ -280,20 +220,20 @@
 
         <div class="card">
             <h2 class="section-title">رأس المال السابق</h2>
-            <div class="input-group">
-                <label for="prev-capital">رأس المال المخمس للسنة الفائتة</label>
-                <input type="number" id="prev-capital" class="main-input" placeholder="0" min="0">
+            <div class="input-container">
+                <input type="number" id="prev-capital" class="main-input" placeholder=" " min="0">
+                <label for="prev-capital" class="static-label">رأس المال المخمس للسنة الفائتة</label>
             </div>
         </div>
 
         <div class="card">
             <h2 class="section-title">أصول السنة الحالية</h2>
-            <div id="assets-container" class="assets-container">
+            <div id="assets-container">
                 </div>
         </div>
 
-        <div class="card results-card" id="results-card">
-            <div id="khums-details" class="hidden-details">
+        <div class="card results-card">
+            <div id="khums-details">
                 <div class="result-row">
                     <span class="result-label">إجمالي الأصول الحالية</span>
                     <span class="result-value" id="res-total-wealth">0</span>
@@ -311,9 +251,7 @@
                     <span class="result-value" id="res-next-capital" style="color: white;">0</span>
                 </div>
             </div>
-            <div id="no-khums-msg" class="no-khums-msg">
-                ليس عليك خمس لهذه السنة 🌿
-            </div>
+            <div id="no-khums-msg" class="no-khums-msg">ليس عليك خمس لهذه السنة 🌿</div>
         </div>
     </div>
 
@@ -322,96 +260,115 @@
         const prevCapitalInput = document.getElementById('prev-capital');
         let sourceCounter = 1;
 
-        // Initialize the app with the first ghost row
         function init() {
-            assetsContainer.appendChild(createRow(true));
+            // إضافة الأصول الأول بشكل مفعل وثابت
+            assetsContainer.appendChild(createRow(false, true));
+            // إضافة أول صف شبح للتحضير
+            assetsContainer.appendChild(createRow(true, false));
+            
             prevCapitalInput.addEventListener('input', calculateKhums);
             calculateKhums();
         }
 
-        // Format numbers for display
         function formatCurrency(num) {
-            return num.toLocaleString('en-US'); // Using en-US for standard comma separated thousands
+            return num.toLocaleString('en-US');
         }
 
-        // Create a new asset row (Ghost or Active)
-        function createRow(isGhost = false) {
-            const row = document.createElement('div');
-            row.className = `asset-row ${isGhost ? 'ghost-row' : ''}`;
+        // isGhost: هل هو صف شفاف؟  isFirst: هل هو الأصول الأول الثابت؟
+        function createRow(isGhost = false, isFirst = false) {
+            const container = document.createElement('div');
+            // نعطي كلاس first-row للأصول الأول عشان نمنع ظهور زر الحذف فيه بالـ CSS
+            container.className = `input-container ${isGhost ? 'ghost-row' : ''} ${isFirst ? 'first-row' : ''}`;
             
-            const nameInput = document.createElement('input');
-            nameInput.type = 'text';
-            nameInput.className = 'asset-name';
-            nameInput.value = isGhost ? `أصول ${sourceCounter}` : '';
-            
+            const currentSourceNum = sourceCounter;
+            sourceCounter++; // نرفع العداد مباشرة لكي يأخذ كل صف جديد رقمًا تسلسليًا خاصًا
+
+            // حقل المبلغ
             const amountInput = document.createElement('input');
             amountInput.type = 'number';
-            amountInput.className = 'asset-amount';
-            amountInput.placeholder = '0';
+            amountInput.className = 'main-input asset-amount';
+            amountInput.placeholder = ' '; 
             amountInput.min = '0';
 
-            // Function to handle activation and spawning of new ghost rows
-            const handleInput = () => {
-                if (row.classList.contains('ghost-row')) {
-                    // Activate row smoothly
-                    row.classList.remove('ghost-row');
-                    sourceCounter++;
-                    // Instantly spawn new ghost row
-                    assetsContainer.appendChild(createRow(true));
+            // حقل الاسم
+            const nameInput = document.createElement('input');
+            nameInput.type = 'text';
+            nameInput.className = 'floating-label asset-name';
+            nameInput.value = `أصول ${currentSourceNum}`;
+
+            // زر الحذف
+            const deleteBtn = document.createElement('button');
+            deleteBtn.type = 'button';
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.innerHTML = '−'; // علامة السالب
+            deleteBtn.tabIndex = -1; // لمنع التركيز عليه بالكيبورد أثناء التنقل
+            
+            // تفعيل زر الحذف
+            deleteBtn.addEventListener('click', () => {
+                if (isFirst) return; // حماية إضافية
+                container.style.opacity = '0';
+                container.style.transform = 'translateY(-10px)';
+                setTimeout(() => {
+                    container.remove();
+                    calculateKhums(); // إعادة الحساب بعد الحذف
+                }, 250);
+            });
+
+            // دالة تعديل العرض التلقائي للاسم
+            const adjustLabelWidth = () => {
+                let ruler = document.getElementById('text-ruler');
+                if (!ruler) {
+                    ruler = document.createElement('span');
+                    ruler.id = 'text-ruler';
+                    ruler.style.cssText = 'position:absolute; visibility:hidden; white-space:pre; font-size:1.1rem; font-family:"Tajawal", sans-serif;';
+                    document.body.appendChild(ruler);
+                }
+                ruler.textContent = nameInput.value || nameInput.placeholder;
+                nameInput.style.width = (ruler.offsetWidth + 12) + 'px';
+            };
+
+            const handleActivation = () => {
+                if (container.classList.contains('ghost-row')) {
+                    container.classList.remove('ghost-row');
+                    assetsContainer.appendChild(createRow(true, false));
                 }
                 calculateKhums();
             };
 
-            // Function to handle safe removal if completely empty
-            const checkEmpty = () => {
-                if (!row.classList.contains('ghost-row')) {
-                    const nameVal = nameInput.value.trim();
-                    const amountVal = amountInput.value.trim();
-                    
-                    // Remove if both fields are empty, or amount is empty and name is default
-                    if ((nameVal === '' && amountVal === '') || 
-                        (amountVal === '' && nameVal.startsWith('أصول '))) {
-                        
-                        row.style.opacity = '0';
-                        row.style.transform = 'translateY(-10px)';
-                        
-                        setTimeout(() => {
-                            row.remove();
-                            calculateKhums();
-                        }, 300); // Matches CSS transition duration
-                    }
+            nameInput.addEventListener('blur', () => {
+                if (nameInput.value.trim() === '') {
+                    nameInput.value = `أصول ${currentSourceNum}`;
+                    adjustLabelWidth();
                 }
-            };
+            });
 
-            nameInput.addEventListener('input', handleInput);
-            amountInput.addEventListener('input', handleInput);
-            
-            nameInput.addEventListener('blur', checkEmpty);
-            amountInput.addEventListener('blur', checkEmpty);
+            amountInput.addEventListener('input', handleActivation);
+            nameInput.addEventListener('focus', () => {
+                nameInput.select();
+                handleActivation();
+            });
+            nameInput.addEventListener('input', handleActivation);
+            nameInput.addEventListener('input', adjustLabelWidth);
+            requestAnimationFrame(adjustLabelWidth);
 
-            // Select text on click for easier editing of default labels
-            nameInput.addEventListener('focus', () => nameInput.select());
+            container.appendChild(amountInput);
+            container.appendChild(nameInput);
+            container.appendChild(deleteBtn);
 
-            row.appendChild(nameInput);
-            row.appendChild(amountInput);
-
-            return row;
+            return container;
         }
 
-        // Core Calculation Logic
         function calculateKhums() {
             const prevCapital = parseFloat(prevCapitalInput.value) || 0;
             let totalCurrentWealth = 0;
 
-            // Sum up all active rows (ignore ghost rows)
-            const rows = assetsContainer.querySelectorAll('.asset-row:not(.ghost-row)');
+            const rows = assetsContainer.querySelectorAll('.input-container:not(.ghost-row)');
             rows.forEach(row => {
                 const amountInput = row.querySelector('.asset-amount');
                 const amount = parseFloat(amountInput.value) || 0;
                 totalCurrentWealth += amount;
             });
 
-            // Formulas
             const netProfit = totalCurrentWealth - prevCapital;
             let khumsDue = 0;
             
@@ -420,11 +377,9 @@
             }
 
             const nextCapital = totalCurrentWealth - khumsDue;
-
             updateUI(totalCurrentWealth, netProfit, khumsDue, nextCapital);
         }
 
-        // Update Results Display
         function updateUI(totalCurrentWealth, netProfit, khumsDue, nextCapital) {
             const detailsDiv = document.getElementById('khums-details');
             const noKhumsMsg = document.getElementById('no-khums-msg');
@@ -435,17 +390,14 @@
             document.getElementById('res-next-capital').innerText = formatCurrency(nextCapital);
 
             if (netProfit <= 0 && totalCurrentWealth > 0) {
-                // Show respectful message, hide detailed khums output
                 detailsDiv.style.display = 'none';
                 noKhumsMsg.style.display = 'block';
             } else {
-                // Show standard results
                 detailsDiv.style.display = 'block';
                 noKhumsMsg.style.display = 'none';
             }
         }
 
-        // Boot up
         init();
     </script>
 </body>
