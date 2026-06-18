@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حاسبة الخمس الذكية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #046A38; /* Deep Emerald Green */
+            --primary-light: #0a8a4d;
+            --accent-color: #D4AF37; /* Soft Gold */
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-main: #2b2b2b;
+            --text-muted: #6c757d;
+            --border-light: #e9ecef;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
+            --shadow-md: 0 8px 24px rgba(4, 106, 56, 0.08);
+            --shadow-lg: 0 12px 32px rgba(4, 106, 56, 0.15);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 2rem 1rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            color: var(--primary-color);
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Inputs General */
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 1rem;
+        }
+
+        .input-group label {
+            font-size: 0.95rem;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .main-input {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.2rem;
+            border: 2px solid var(--border-light);
+            border-radius: 10px;
+            background-color: #fafafa;
+            transition: var(--transition);
+            color: var(--text-main);
+        }
+
+        .main-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background-color: #fff;
+            box-shadow: 0 0 0 4px rgba(4, 106, 56, 0.1);
+        }
+
+        /* Dynamic Asset Rows */
+        .assets-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .asset-row {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            padding: 0.8rem;
+            border-radius: 10px;
+            background: #fff;
+            border: 1px solid var(--border-light);
+            transition: var(--transition);
+            animation: slideIn 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .asset-row:focus-within {
+            border-color: var(--primary-light);
+            box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05);
+        }
+
+        .asset-name, .asset-amount {
+            border: none;
+            background: transparent;
+            font-size: 1.05rem;
+            color: var(--text-main);
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .asset-name {
+            flex-grow: 1;
+            font-weight: 500;
+        }
+
+        .asset-amount {
+            width: 120px;
+            text-align: left;
+            font-weight: 700;
+            color: var(--primary-color);
+            border-bottom: 2px solid transparent;
+        }
+
+        .asset-amount:focus {
+            border-bottom: 2px solid var(--accent-color);
+        }
+
+        .asset-amount::placeholder {
+            color: #ced4da;
+            font-weight: 400;
+        }
+
+        /* Ghost Row Styling */
+        .ghost-row {
+            opacity: 0.4;
+            border: 1px dashed var(--border-light);
+            background: transparent;
+            cursor: text;
+        }
+        
+        .ghost-row:hover {
+            opacity: 0.6;
+        }
+
+        .ghost-row .asset-amount {
+            color: var(--text-muted);
+        }
+
+        /* Results Card */
+        .results-card {
+            background: linear-gradient(135deg, var(--primary-color), #034f2a);
+            color: white;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .results-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .result-row:last-child {
+            border-bottom: none;
+            margin-top: 0.5rem;
+            padding-top: 1.5rem;
+        }
+
+        .result-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .result-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            transition: var(--transition);
+        }
+
+        .khums-highlight {
+            font-size: 1.8rem;
+            color: #fff;
+            background: var(--accent-color);
+            padding: 0.3rem 1rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .no-khums-msg {
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            padding: 1rem;
+            display: none;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .hidden-details {
+            transition: var(--transition);
+        }
+
+        @media (max-width: 480px) {
+            .asset-row { padding: 0.6rem; }
+            .asset-name, .asset-amount { font-size: 0.95rem; }
+            .asset-amount { width: 90px; }
+            .header h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>حاسبة الخمس</h1>
+        </div>
+
+        <div class="card">
+            <h2 class="section-title">رأس المال السابق</h2>
+            <div class="input-group">
+                <label for="prev-capital">رأس المال المخمس للسنة الفائتة</label>
+                <input type="number" id="prev-capital" class="main-input" placeholder="0" min="0">
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="section-title">أصول السنة الحالية</h2>
+            <div id="assets-container" class="assets-container">
+                </div>
+        </div>
+
+        <div class="card results-card" id="results-card">
+            <div id="khums-details" class="hidden-details">
+                <div class="result-row">
+                    <span class="result-label">إجمالي الأصول الحالية</span>
+                    <span class="result-value" id="res-total-wealth">0</span>
+                </div>
+                <div class="result-row">
+                    <span class="result-label">الربح الصافي</span>
+                    <span class="result-value" id="res-net-profit">0</span>
+                </div>
+                <div class="result-row">
+                    <span class="result-label">مقدار الخمس الواجب</span>
+                    <span class="result-value khums-highlight" id="res-khums-due">0</span>
+                </div>
+                <div class="result-row">
+                    <span class="result-label">رأس المال المخمس القادم</span>
+                    <span class="result-value" id="res-next-capital" style="color: white;">0</span>
+                </div>
+            </div>
+            <div id="no-khums-msg" class="no-khums-msg">
+                ليس عليك خمس لهذه السنة 🌿
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const assetsContainer = document.getElementById('assets-container');
+        const prevCapitalInput = document.getElementById('prev-capital');
+        let sourceCounter = 1;
+
+        // Initialize the app with the first ghost row
+        function init() {
+            assetsContainer.appendChild(createRow(true));
+            prevCapitalInput.addEventListener('input', calculateKhums);
+            calculateKhums();
+        }
+
+        // Format numbers for display
+        function formatCurrency(num) {
+            return num.toLocaleString('en-US'); // Using en-US for standard comma separated thousands
+        }
+
+        // Create a new asset row (Ghost or Active)
+        function createRow(isGhost = false) {
+            const row = document.createElement('div');
+            row.className = `asset-row ${isGhost ? 'ghost-row' : ''}`;
+            
+            const nameInput = document.createElement('input');
+            nameInput.type = 'text';
+            nameInput.className = 'asset-name';
+            nameInput.value = isGhost ? `مصدر ${sourceCounter}` : '';
+            
+            const amountInput = document.createElement('input');
+            amountInput.type = 'number';
+            amountInput.className = 'asset-amount';
+            amountInput.placeholder = '0';
+            amountInput.min = '0';
+
+            // Function to handle activation and spawning of new ghost rows
+            const handleInput = () => {
+                if (row.classList.contains('ghost-row')) {
+                    // Activate row smoothly
+                    row.classList.remove('ghost-row');
+                    sourceCounter++;
+                    // Instantly spawn new ghost row
+                    assetsContainer.appendChild(createRow(true));
+                }
+                calculateKhums();
+            };
+
+            // Function to handle safe removal if completely empty
+            const checkEmpty = () => {
+                if (!row.classList.contains('ghost-row')) {
+                    const nameVal = nameInput.value.trim();
+                    const amountVal = amountInput.value.trim();
+                    
+                    // Remove if both fields are empty, or amount is empty and name is default
+                    if ((nameVal === '' && amountVal === '') || 
+                        (amountVal === '' && nameVal.startsWith('مصدر '))) {
+                        
+                        row.style.opacity = '0';
+                        row.style.transform = 'translateY(-10px)';
+                        
+                        setTimeout(() => {
+                            row.remove();
+                            calculateKhums();
+                        }, 300); // Matches CSS transition duration
+                    }
+                }
+            };
+
+            nameInput.addEventListener('input', handleInput);
+            amountInput.addEventListener('input', handleInput);
+            
+            nameInput.addEventListener('blur', checkEmpty);
+            amountInput.addEventListener('blur', checkEmpty);
+
+            // Select text on click for easier editing of default labels
+            nameInput.addEventListener('focus', () => nameInput.select());
+
+            row.appendChild(nameInput);
+            row.appendChild(amountInput);
+
+            return row;
+        }
+
+        // Core Calculation Logic
+        function calculateKhums() {
+            const prevCapital = parseFloat(prevCapitalInput.value) || 0;
+            let totalCurrentWealth = 0;
+
+            // Sum up all active rows (ignore ghost rows)
+            const rows = assetsContainer.querySelectorAll('.asset-row:not(.ghost-row)');
+            rows.forEach(row => {
+                const amountInput = row.querySelector('.asset-amount');
+                const amount = parseFloat(amountInput.value) || 0;
+                totalCurrentWealth += amount;
+            });
+
+            // Formulas
+            const netProfit = totalCurrentWealth - prevCapital;
+            let khumsDue = 0;
+            
+            if (netProfit > 0) {
+                khumsDue = netProfit / 5;
+            }
+
+            const nextCapital = totalCurrentWealth - khumsDue;
+
+            updateUI(totalCurrentWealth, netProfit, khumsDue, nextCapital);
+        }
+
+        // Update Results Display
+        function updateUI(totalCurrentWealth, netProfit, khumsDue, nextCapital) {
+            const detailsDiv = document.getElementById('khums-details');
+            const noKhumsMsg = document.getElementById('no-khums-msg');
+
+            document.getElementById('res-total-wealth').innerText = formatCurrency(totalCurrentWealth);
+            document.getElementById('res-net-profit').innerText = formatCurrency(netProfit);
+            document.getElementById('res-khums-due').innerText = formatCurrency(khumsDue);
+            document.getElementById('res-next-capital').innerText = formatCurrency(nextCapital);
+
+            if (netProfit <= 0 && totalCurrentWealth > 0) {
+                // Show respectful message, hide detailed khums output
+                detailsDiv.style.display = 'none';
+                noKhumsMsg.style.display = 'block';
+            } else {
+                // Show standard results
+                detailsDiv.style.display = 'block';
+                noKhumsMsg.style.display = 'none';
+            }
+        }
+
+        // Boot up
+        init();
+    </script>
+</body>
+</html>
