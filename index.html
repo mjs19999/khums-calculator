@@ -63,7 +63,6 @@
             margin-bottom: 1.5rem;
         }
 
-        /* حاوية الإدخال */
         .input-container {
             position: relative;
             margin-bottom: 1.2rem;
@@ -76,11 +75,10 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* حقول الإدخال الأساسية */
         .main-input {
             width: 100%;
             padding: 1rem 0.8rem;
-            padding-left: 2.5rem; /* مساحة لزر الحذف على اليسار */
+            padding-left: 2.5rem;
             font-size: 1rem;
             border: 1px solid var(--border-light);
             border-radius: 8px;
@@ -95,7 +93,6 @@
             box-shadow: 0 0 0 4px rgba(4, 106, 56, 0.1);
         }
 
-        /* الليبل الثابت */
         .static-label {
             position: absolute;
             right: 10px;
@@ -111,14 +108,13 @@
             margin: 0;
         }
 
-        /* الليبل القابل للتعديل */
         input.floating-label {
             position: absolute;
             right: 10px;
             top: 50%;
             transform: translateY(-50%);
             color: var(--text-muted);
-            font-size: 1.0rem;
+            font-size: 1rem;
             transition: var(--transition);
             transform-origin: right center;
             background-color: transparent;
@@ -126,19 +122,18 @@
             outline: none;
             font-family: inherit;
             width: auto;
-            max-width: 80%; 
+            max-width: 80%;
             pointer-events: auto;
             cursor: text;
         }
 
-        /* تصغير ورفع الليبل */
         .main-input:focus ~ .static-label,
         .main-input:not(:placeholder-shown) ~ .static-label,
         .main-input:focus ~ input.floating-label,
         .main-input:not(:placeholder-shown) ~ input.floating-label,
         input.floating-label:focus {
             top: 0;
-            transform: translateY(-50%) scale(0.85); /* تصغير الخط كما طلبنا سابقًا */
+            transform: translateY(-50%) scale(0.85);
             background-color: var(--card-bg);
             padding: 0 3px;
             color: var(--primary-color);
@@ -149,7 +144,6 @@
             color: var(--primary-light);
         }
 
-        /* زر الحذف السالب */
         .delete-btn {
             position: absolute;
             left: 12px;
@@ -169,7 +163,7 @@
             cursor: pointer;
             transition: var(--transition);
             opacity: 0;
-            pointer-events: none; /* غير قابل للضغط وهو مخفي */
+            pointer-events: none;
             z-index: 10;
         }
 
@@ -178,13 +172,11 @@
             transform: translateY(-50%) scale(1.1);
         }
 
-        /* إظهار زر الحذف فقط إذا لم يكن الصف شبحًا، ولم يكن الصف الأول */
         .input-container:not(.ghost-row):not(.first-row) .delete-btn {
             opacity: 1;
             pointer-events: auto;
         }
 
-        /* صف الشبح */
         .ghost-row { opacity: 0.4; transition: opacity 0.3s; }
         .ghost-row:hover { opacity: 0.6; }
         .ghost-row .main-input {
@@ -192,7 +184,6 @@
             background-color: #fafafa;
         }
 
-        /* البطاقة النهائية */
         .results-card {
             background: linear-gradient(135deg, var(--primary-color), #034f2a);
             color: white;
@@ -200,19 +191,67 @@
             position: relative;
             overflow: hidden;
         }
-        .result-row { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
-        .result-row:last-child { border-bottom: none; margin-top: 0.5rem; padding-top: 1.5rem; }
-        .result-label { font-size: 1.1rem; opacity: 0.9; }
-        .result-value { font-size: 1.3rem; font-weight: 700; color: var(--accent-color); }
-        .khums-highlight { font-size: 1.8rem; color: #fff; background: var(--accent-color); padding: 0.3rem 1rem; border-radius: 8px; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3); }
-        .no-khums-msg { text-align: center; font-size: 1.3rem; font-weight: 700; color: var(--accent-color); padding: 1rem; display: none; animation: fadeIn 0.5s ease forwards; }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @media (max-width: 480px) { .main-input { font-size: 1.05rem; padding-left: 2.5rem; } .header h1 { font-size: 1.8rem; } }
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .result-row:last-child {
+            border-bottom: none;
+            margin-top: 0.5rem;
+            padding-top: 1.5rem;
+        }
+
+        .result-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .result-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+
+        .khums-highlight {
+            font-size: 1.8rem;
+            color: #fff;
+            background: var(--accent-color);
+            padding: 0.3rem 1rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .no-khums-inline {
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        .no-khums-inline .result-label {
+            opacity: 0.95;
+        }
+
+        .no-khums-inline .result-value {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 480px) {
+            .main-input { font-size: 1.05rem; padding-left: 2.5rem; }
+            .header h1 { font-size: 1.8rem; }
+        }
     </style>
 </head>
 <body>
-
     <div class="container">
         <div class="header">
             <h1>حاسبة الخمس</h1>
@@ -228,8 +267,7 @@
 
         <div class="card">
             <h2 class="section-title">أصول السنة الحالية</h2>
-            <div id="assets-container">
-                </div>
+            <div id="assets-container"></div>
         </div>
 
         <div class="card results-card">
@@ -242,16 +280,22 @@
                     <span class="result-label">الربح الصافي</span>
                     <span class="result-value" id="res-net-profit">0</span>
                 </div>
-                <div class="result-row">
+
+                <div class="result-row" id="khums-row">
                     <span class="result-label">مقدار الخمس الواجب</span>
                     <span class="result-value khums-highlight" id="res-khums-due">0</span>
                 </div>
+
+                <div class="result-row no-khums-inline" id="no-khums-row" style="display: none;">
+                    <span class="result-label">الحالة</span>
+                    <span class="result-value">ليس عليك خمس لهذه السنة 🌿</span>
+                </div>
+
                 <div class="result-row">
                     <span class="result-label">رأس المال المخمس القادم</span>
                     <span class="result-value" id="res-next-capital" style="color: white;">0</span>
                 </div>
             </div>
-            <div id="no-khums-msg" class="no-khums-msg">ليس عليك خمس لهذه السنة 🌿</div>
         </div>
     </div>
 
@@ -261,11 +305,8 @@
         let sourceCounter = 1;
 
         function init() {
-            // إضافة الأصول الأول بشكل مفعل وثابت
             assetsContainer.appendChild(createRow(false, true));
-            // إضافة أول صف شبح للتحضير
             assetsContainer.appendChild(createRow(true, false));
-            
             prevCapitalInput.addEventListener('input', calculateKhums);
             calculateKhums();
         }
@@ -274,47 +315,40 @@
             return num.toLocaleString('en-US');
         }
 
-        // isGhost: هل هو صف شفاف؟  isFirst: هل هو الأصول الأول الثابت؟
         function createRow(isGhost = false, isFirst = false) {
             const container = document.createElement('div');
-            // نعطي كلاس first-row للأصول الأول عشان نمنع ظهور زر الحذف فيه بالـ CSS
             container.className = `input-container ${isGhost ? 'ghost-row' : ''} ${isFirst ? 'first-row' : ''}`;
-            
-            const currentSourceNum = sourceCounter;
-            sourceCounter++; // نرفع العداد مباشرة لكي يأخذ كل صف جديد رقمًا تسلسليًا خاصًا
 
-            // حقل المبلغ
+            const currentSourceNum = sourceCounter;
+            sourceCounter++;
+
             const amountInput = document.createElement('input');
             amountInput.type = 'number';
             amountInput.className = 'main-input asset-amount';
-            amountInput.placeholder = ' '; 
+            amountInput.placeholder = ' ';
             amountInput.min = '0';
 
-            // حقل الاسم
             const nameInput = document.createElement('input');
             nameInput.type = 'text';
             nameInput.className = 'floating-label asset-name';
             nameInput.value = `أصول ${currentSourceNum}`;
 
-            // زر الحذف
             const deleteBtn = document.createElement('button');
             deleteBtn.type = 'button';
             deleteBtn.className = 'delete-btn';
-            deleteBtn.innerHTML = '−'; // علامة السالب
-            deleteBtn.tabIndex = -1; // لمنع التركيز عليه بالكيبورد أثناء التنقل
-            
-            // تفعيل زر الحذف
+            deleteBtn.innerHTML = '−';
+            deleteBtn.tabIndex = -1;
+
             deleteBtn.addEventListener('click', () => {
-                if (isFirst) return; // حماية إضافية
+                if (isFirst) return;
                 container.style.opacity = '0';
                 container.style.transform = 'translateY(-10px)';
                 setTimeout(() => {
                     container.remove();
-                    calculateKhums(); // إعادة الحساب بعد الحذف
+                    calculateKhums();
                 }, 250);
             });
 
-            // دالة تعديل العرض التلقائي للاسم
             const adjustLabelWidth = () => {
                 let ruler = document.getElementById('text-ruler');
                 if (!ruler) {
@@ -371,7 +405,7 @@
 
             const netProfit = totalCurrentWealth - prevCapital;
             let khumsDue = 0;
-            
+
             if (netProfit > 0) {
                 khumsDue = netProfit / 5;
             }
@@ -381,20 +415,20 @@
         }
 
         function updateUI(totalCurrentWealth, netProfit, khumsDue, nextCapital) {
-            const detailsDiv = document.getElementById('khums-details');
-            const noKhumsMsg = document.getElementById('no-khums-msg');
-
             document.getElementById('res-total-wealth').innerText = formatCurrency(totalCurrentWealth);
             document.getElementById('res-net-profit').innerText = formatCurrency(netProfit);
             document.getElementById('res-khums-due').innerText = formatCurrency(khumsDue);
             document.getElementById('res-next-capital').innerText = formatCurrency(nextCapital);
 
+            const khumsRow = document.getElementById('khums-row');
+            const noKhumsRow = document.getElementById('no-khums-row');
+
             if (netProfit <= 0 && totalCurrentWealth > 0) {
-                detailsDiv.style.display = 'none';
-                noKhumsMsg.style.display = 'block';
+                khumsRow.style.display = 'none';
+                noKhumsRow.style.display = 'flex';
             } else {
-                detailsDiv.style.display = 'block';
-                noKhumsMsg.style.display = 'none';
+                khumsRow.style.display = 'flex';
+                noKhumsRow.style.display = 'none';
             }
         }
 
