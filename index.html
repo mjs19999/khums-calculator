@@ -3,78 +3,138 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>حاسبة الخمس الذكية</title>
+  <title>حاسبة الخمس</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+
   <style>
-    :root {
-      --primary-color: #046A38;
-      --primary-light: #0a8a4d;
-      --accent-color: #D4AF37;
-      --bg-color: #f8f9fa;
-      --card-bg: #ffffff;
-      --text-main: #2b2b2b;
-      --text-muted: #6f6f6f;
-      --border-light: #d7d7d7;
-      --danger-bg: #ffebee;
-      --danger-color: #c62828;
-      --shadow-sm: 0 4px 6px rgba(0,0,0,0.05);
+    :root,
+    [data-theme="light"] {
+      --primary: #046A38;
+      --primary-hover: #03552d;
+      --primary-soft: rgba(4, 106, 56, 0.12);
+      --accent: #D4AF37;
+
+      --bg: #f8f9f7;
+      --surface: #ffffff;
+      --surface-2: #fcfcfb;
+      --surface-3: #f2f4f1;
+      --text: #1f2a22;
+      --text-muted: #647067;
+      --border: #d8ded9;
+
+      --success: #2e7d32;
+      --danger: #c62828;
+      --danger-soft: #ffebee;
+
+      --shadow-sm: 0 4px 8px rgba(0,0,0,0.05);
       --shadow-md: 0 8px 24px rgba(4, 106, 56, 0.08);
-      --shadow-lg: 0 12px 32px rgba(4, 106, 56, 0.15);
+      --shadow-lg: 0 14px 34px rgba(4, 106, 56, 0.16);
+
+      --radius: 14px;
       --transition: 180ms ease;
-      --radius: 12px;
     }
 
-    * { box-sizing: border-box; }
+    [data-theme="dark"] {
+      --primary: #58b77c;
+      --primary-hover: #469c67;
+      --primary-soft: rgba(88, 183, 124, 0.14);
+      --accent: #e6c45a;
 
-    html { scroll-behavior: smooth; }
+      --bg: #161916;
+      --surface: #1f241f;
+      --surface-2: #242b25;
+      --surface-3: #2c342d;
+      --text: #eef3ee;
+      --text-muted: #b0bbb1;
+      --border: #39433b;
+
+      --success: #7ecb82;
+      --danger: #ff9b9b;
+      --danger-soft: rgba(255, 155, 155, 0.12);
+
+      --shadow-sm: 0 4px 8px rgba(0,0,0,0.22);
+      --shadow-md: 0 8px 24px rgba(0,0,0,0.30);
+      --shadow-lg: 0 14px 34px rgba(0,0,0,0.38);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
 
     body {
       margin: 0;
       font-family: 'Tajawal', sans-serif;
-      background: var(--bg-color);
-      color: var(--text-main);
-      line-height: 1.6;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
       padding: 1rem 0.75rem 2rem;
       display: flex;
       justify-content: center;
     }
 
-    .container {
-      width: 100%;
-      max-width: 560px;
+    button,
+    input {
+      font: inherit;
     }
 
-    .header {
-      text-align: center;
-      margin-bottom: 1.5rem;
+    .container {
+      width: 100%;
+      max-width: 620px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1rem;
     }
 
     .header h1 {
       margin: 0;
-      color: var(--primary-color);
+      color: var(--primary);
       font-size: clamp(1.8rem, 5vw, 2.3rem);
     }
 
     .header p {
-      margin: 0.5rem 0 0;
+      margin: 0.45rem 0 0;
       color: var(--text-muted);
       font-size: 1rem;
     }
 
+    .theme-toggle {
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      border-radius: 12px;
+      min-height: 44px;
+      min-width: 44px;
+      padding: 0.75rem 0.9rem;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: transform var(--transition), background-color var(--transition), border-color var(--transition);
+    }
+
     .card {
-      background: var(--card-bg);
+      background: var(--surface);
+      border: 1px solid var(--border);
       border-radius: var(--radius);
       box-shadow: var(--shadow-sm);
       padding: 1.2rem;
-      margin-bottom: 1.2rem;
+      margin-bottom: 1rem;
     }
 
     .section-title {
       margin: 0 0 1rem;
-      color: var(--primary-color);
-      font-size: 1.2rem;
+      color: var(--primary);
+      font-size: 1.15rem;
       font-weight: 700;
     }
 
@@ -92,7 +152,7 @@
       display: block;
       margin-bottom: 0.45rem;
       font-weight: 600;
-      color: var(--text-main);
+      color: var(--text);
     }
 
     .hint {
@@ -104,27 +164,27 @@
     input[type="number"],
     input[type="text"] {
       width: 100%;
-      border: 1px solid var(--border-light);
-      border-radius: 10px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
       padding: 0.95rem 0.9rem;
       font-size: 1rem;
-      background: #fff;
-      color: var(--text-main);
+      background: var(--surface-2);
+      color: var(--text);
       transition: border-color var(--transition), box-shadow var(--transition), background-color var(--transition);
     }
 
     input:focus {
       outline: none;
-      border-color: var(--primary-color);
-      box-shadow: 0 0 0 4px rgba(4, 106, 56, 0.12);
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px var(--primary-soft);
     }
 
     .asset-row {
-      border: 1px solid #ececec;
+      border: 1px solid var(--border);
       border-radius: 12px;
       padding: 1rem;
       margin-bottom: 0.9rem;
-      background: #fcfcfc;
+      background: var(--surface-2);
       box-shadow: 0 2px 8px rgba(0,0,0,0.02);
     }
 
@@ -139,7 +199,7 @@
     .asset-row-title {
       margin: 0;
       font-size: 1rem;
-      color: var(--primary-color);
+      color: var(--primary);
       font-weight: 700;
     }
 
@@ -156,40 +216,53 @@
     }
 
     button {
-      font: inherit;
       border: none;
-      border-radius: 10px;
+      border-radius: 12px;
       cursor: pointer;
       transition: transform var(--transition), background-color var(--transition), opacity var(--transition), box-shadow var(--transition);
       min-height: 44px;
     }
 
-    button:hover { transform: translateY(-1px); }
-    button:active { transform: translateY(0); }
-    button:focus-visible {
-      outline: 2px solid var(--primary-color);
+    button:hover {
+      transform: translateY(-1px);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    button:focus-visible,
+    input:focus-visible {
+      outline: 2px solid var(--primary);
       outline-offset: 3px;
     }
 
     .btn-primary {
-      background: var(--primary-color);
+      background: var(--primary);
       color: #fff;
       padding: 0.9rem 1.1rem;
       box-shadow: var(--shadow-md);
     }
 
-    .btn-primary:hover { background: var(--primary-light); }
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
 
     .btn-danger {
-      background: var(--danger-bg);
-      color: var(--danger-color);
+      background: var(--danger-soft);
+      color: var(--danger);
       padding: 0.7rem 0.95rem;
     }
 
     .results-card {
-      background: linear-gradient(135deg, var(--primary-color), #034f2a);
+      background: linear-gradient(135deg, var(--primary), #034f2a);
       color: #fff;
       box-shadow: var(--shadow-lg);
+      border: none;
+    }
+
+    .results-card .section-title {
+      color: #fff;
     }
 
     .result-row {
@@ -201,44 +274,37 @@
       border-bottom: 1px solid rgba(255,255,255,0.12);
     }
 
-    .result-row:last-child { border-bottom: none; }
+    .result-row:last-child {
+      border-bottom: none;
+    }
 
-    .result-label { opacity: 0.95; }
+    .result-label {
+      opacity: 0.96;
+    }
 
     .result-value {
-      font-size: 1.18rem;
+      font-size: 1.15rem;
       font-weight: 700;
-      color: var(--accent-color);
+      color: var(--accent);
       text-align: left;
       direction: ltr;
       unicode-bidi: plaintext;
     }
 
     .khums-highlight {
-      font-size: 1.55rem;
+      font-size: 1.5rem;
       color: #fff;
-      background: var(--accent-color);
+      background: var(--accent);
       padding: 0.3rem 0.95rem;
-      border-radius: 8px;
+      border-radius: 10px;
       box-shadow: 0 4px 15px rgba(212,175,55,0.3);
     }
 
     .status-box {
-      margin-top: 0.4rem;
+      margin-top: 0.6rem;
       border-radius: 10px;
       padding: 0.95rem 1rem;
       font-weight: 600;
-      display: none;
-    }
-
-    .status-box.info {
-      display: block;
-      background: rgba(255,255,255,0.12);
-      color: #fff;
-    }
-
-    .status-box.success {
-      display: block;
       background: rgba(255,255,255,0.12);
       color: #fff;
     }
@@ -256,28 +322,66 @@
     }
 
     @media (max-width: 480px) {
-      body { padding-inline: 0.55rem; }
-      .card { padding: 1rem; }
-      .result-row { align-items: flex-start; flex-direction: column; }
-      .result-value { text-align: right; }
-      .btn-row { flex-direction: column; }
-      .btn-primary { width: 100%; }
+      body {
+        padding-inline: 0.55rem;
+      }
+
+      .topbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .card {
+        padding: 1rem;
+      }
+
+      .result-row {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .result-value {
+        text-align: right;
+      }
+
+      .btn-row {
+        flex-direction: column;
+      }
+
+      .btn-primary {
+        width: 100%;
+      }
+
+      .theme-toggle {
+        align-self: flex-start;
+      }
     }
   </style>
 </head>
 <body>
   <main class="container">
-    <header class="header">
-      <h1>حاسبة الخمس</h1>
-      <p>نسخة أوضح وأسهل استخدامًا مع دعم أفضل للوصول وإدخال الأصول.</p>
-    </header>
+    <div class="topbar">
+      <header class="header">
+        <h1>حاسبة الخمس</h1>
+      </header>
+
+      <button type="button" id="theme-toggle" class="theme-toggle" aria-label="تبديل الوضع الليلي">🌙</button>
+    </div>
 
     <section class="card" aria-labelledby="capital-title">
       <h2 id="capital-title" class="section-title">رأس المال السابق</h2>
       <div class="field">
-        <label for="prev-capital">رأس المال المخمس للسنة الفائتة</label>
-        <input type="number" id="prev-capital" inputmode="decimal" min="0" step="any" placeholder="مثال: 10000" aria-describedby="prev-capital-hint">
-        <p class="hint" id="prev-capital-hint">أدخل ما تبقى من رأس المال المخمس من السنة الماضية.</p>
+        <label for="prev-capital">رأس المال المخمّس للسنة الفائتة</label>
+        <input
+          type="number"
+          id="prev-capital"
+          inputmode="decimal"
+          min="0"
+          step="any"
+          placeholder="مثال: 10000"
+          aria-describedby="prev-capital-hint"
+        >
+        <p class="hint" id="prev-capital-hint">أدخل ما تبقّى من رأس المال المخمّس من السنة الماضية.</p>
       </div>
     </section>
 
@@ -290,29 +394,29 @@
     </section>
 
     <section class="card results-card" aria-labelledby="results-title">
-      <h2 id="results-title" class="section-title" style="color:#fff;">النتائج</h2>
+      <h2 id="results-title" class="section-title">النتائج</h2>
 
       <div class="result-row">
         <span class="result-label">إجمالي الأصول الحالية</span>
-        <output class="result-value" id="res-total-wealth" for="prev-capital">0</output>
+        <output class="result-value" id="res-total-wealth">0</output>
       </div>
 
       <div class="result-row">
         <span class="result-label">الربح الصافي</span>
-        <output class="result-value" id="res-net-profit" for="prev-capital">0</output>
+        <output class="result-value" id="res-net-profit">0</output>
       </div>
 
       <div class="result-row" id="khums-row">
         <span class="result-label">مقدار الخمس الواجب</span>
-        <output class="result-value khums-highlight" id="res-khums-due" for="prev-capital">0</output>
+        <output class="result-value khums-highlight" id="res-khums-due">0</output>
       </div>
 
       <div class="result-row">
-        <span class="result-label">رأس المال المخمس القادم</span>
-        <output class="result-value" style="color:#fff;" id="res-next-capital" for="prev-capital">0</output>
+        <span class="result-label">رأس المال المخمّس القادم</span>
+        <output class="result-value" style="color:#fff;" id="res-next-capital">0</output>
       </div>
 
-      <div id="status-box" class="status-box info" aria-live="polite">
+      <div id="status-box" class="status-box" aria-live="polite">
         أدخل رأس المال والأصول لحساب الخمس.
       </div>
     </section>
@@ -324,14 +428,16 @@
         <h3 class="asset-row-title"></h3>
         <button type="button" class="btn-danger delete-btn">حذف</button>
       </div>
+
       <div class="asset-grid">
         <div class="asset-field">
           <label class="asset-name-label">اسم الأصل (اختياري)</label>
           <input type="text" class="asset-name" placeholder="مثال: نقد، حساب بنكي، بضاعة">
         </div>
+
         <div class="asset-field">
           <label class="asset-amount-label">قيمة الأصل</label>
-          <input type="number" class="asset-amount" inputmode="decimal" min="0" step="any" placeholder="0" />
+          <input type="number" class="asset-amount" inputmode="decimal" min="0" step="any" placeholder="0">
         </div>
       </div>
     </article>
@@ -343,8 +449,8 @@
     const prevCapitalInput = document.getElementById('prev-capital');
     const assetTemplate = document.getElementById('asset-template');
     const statusBox = document.getElementById('status-box');
-
-    let assetCounter = 0;
+    const khumsRow = document.getElementById('khums-row');
+    const themeToggle = document.getElementById('theme-toggle');
 
     function formatNumber(value) {
       return new Intl.NumberFormat('ar-SA-u-nu-latn', {
@@ -357,8 +463,13 @@
       return Number.isFinite(parsed) ? parsed : 0;
     }
 
+    function getAssetRows() {
+      return [...assetsContainer.querySelectorAll('.asset-row')];
+    }
+
     function updateAssetLabels() {
-      const rows = [...assetsContainer.querySelectorAll('.asset-row')];
+      const rows = getAssetRows();
+
       rows.forEach((row, index) => {
         const rowNum = index + 1;
         const title = row.querySelector('.asset-row-title');
@@ -376,49 +487,26 @@
         amountLabel.setAttribute('for', amountId);
         nameInput.id = nameId;
         amountInput.id = amountId;
-        amountInput.setAttribute('aria-describedby', 'results-title');
         deleteBtn.setAttribute('aria-label', `حذف الأصل ${rowNum}`);
       });
     }
 
-    function addAssetRow({ name = '', amount = '' } = {}) {
-      const fragment = assetTemplate.content.cloneNode(true);
-      const row = fragment.querySelector('.asset-row');
-      const nameInput = row.querySelector('.asset-name');
-      const amountInput = row.querySelector('.asset-amount');
-      const deleteBtn = row.querySelector('.delete-btn');
-
-      assetCounter += 1;
-      nameInput.value = name;
-      amountInput.value = amount;
-
-      nameInput.addEventListener('input', calculateKhums);
-      amountInput.addEventListener('input', calculateKhums);
-
-      deleteBtn.addEventListener('click', () => {
-        row.remove();
-        updateAssetLabels();
-        if (assetsContainer.children.length === 0) {
-          addAssetRow();
-        }
-        calculateKhums();
-      });
-
-      assetsContainer.appendChild(fragment);
-      updateAssetLabels();
-      calculateKhums();
+    function setStatus(message, showKhums = true) {
+      khumsRow.style.display = showKhums ? 'flex' : 'none';
+      statusBox.textContent = message;
     }
 
     function calculateKhums() {
       const prevCapital = parseValue(prevCapitalInput.value);
-      const rows = [...assetsContainer.querySelectorAll('.asset-row')];
+      const rows = getAssetRows();
+
       const totalCurrentWealth = rows.reduce((sum, row) => {
         const amount = parseValue(row.querySelector('.asset-amount').value);
         return sum + amount;
       }, 0);
 
       const netProfit = totalCurrentWealth - prevCapital;
-      const khumsDue = netProfit > 0 ? netProfit / 5 : 0;
+      const khumsDue = netProfit > 0 ? netProfit * 0.2 : 0;
       const nextCapital = totalCurrentWealth - khumsDue;
 
       document.getElementById('res-total-wealth').textContent = formatNumber(totalCurrentWealth);
@@ -429,30 +517,72 @@
       const hasPrevCapital = prevCapitalInput.value.trim() !== '';
       const hasAnyAssetValue = rows.some(row => row.querySelector('.asset-amount').value.trim() !== '');
       const hasAnyInput = hasPrevCapital || hasAnyAssetValue;
-      const khumsRow = document.getElementById('khums-row');
 
       if (!hasAnyInput) {
-        khumsRow.style.display = 'flex';
-        statusBox.className = 'status-box info';
-        statusBox.textContent = 'أدخل رأس المال والأصول لحساب الخمس.';
+        setStatus('أدخل رأس المال والأصول لحساب الخمس.', true);
         return;
       }
 
       if (netProfit <= 0) {
-        khumsRow.style.display = 'none';
-        statusBox.className = 'status-box success';
-        statusBox.textContent = 'ليس عليك خمس لهذه السنة 🌿';
+        setStatus('ليس عليك خمس لهذه السنة 🌿', false);
         return;
       }
 
-      khumsRow.style.display = 'flex';
-      statusBox.className = 'status-box info';
-      statusBox.textContent = 'تم حساب الخمس بناءً على الربح الصافي لهذه السنة.';
+      setStatus('تم حساب الخمس بناءً على الربح الصافي لهذه السنة.', true);
+    }
+
+    function addAssetRow({ name = '', amount = '' } = {}) {
+      const fragment = assetTemplate.content.cloneNode(true);
+      const row = fragment.querySelector('.asset-row');
+      const nameInput = row.querySelector('.asset-name');
+      const amountInput = row.querySelector('.asset-amount');
+      const deleteBtn = row.querySelector('.delete-btn');
+
+      nameInput.value = name;
+      amountInput.value = amount;
+
+      nameInput.addEventListener('input', calculateKhums);
+      amountInput.addEventListener('input', calculateKhums);
+
+      deleteBtn.addEventListener('click', () => {
+        row.remove();
+
+        if (assetsContainer.children.length === 0) {
+          addAssetRow();
+        }
+
+        updateAssetLabels();
+        calculateKhums();
+      });
+
+      assetsContainer.appendChild(fragment);
+      updateAssetLabels();
+      calculateKhums();
+    }
+
+    function applyTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+      themeToggle.setAttribute(
+        'aria-label',
+        theme === 'dark' ? 'تبديل الوضع النهاري' : 'تبديل الوضع الليلي'
+      );
+    }
+
+    function initTheme() {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      applyTheme(prefersDark ? 'dark' : 'light');
+
+      themeToggle.addEventListener('click', () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+        applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+      });
     }
 
     addAssetBtn.addEventListener('click', () => addAssetRow());
     prevCapitalInput.addEventListener('input', calculateKhums);
 
+    initTheme();
     addAssetRow();
   </script>
 </body>
