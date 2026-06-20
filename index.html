@@ -1,438 +1,459 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حاسبة الخمس الذكية</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #046A38;
-            --primary-light: #0a8a4d;
-            --accent-color: #D4AF37;
-            --bg-color: #f8f9fa;
-            --card-bg: #ffffff;
-            --text-main: #2b2b2b;
-            --text-muted: #888888;
-            --border-light: #cccccc;
-            --danger-bg: #ffebee;
-            --danger-color: #d32f2f;
-            --shadow-sm: 0 4px 6px rgba(0,0,0,0.05);
-            --shadow-md: 0 8px 24px rgba(4, 106, 56, 0.08);
-            --shadow-lg: 0 12px 32px rgba(4, 106, 56, 0.15);
-            --transition: all 0.25s ease;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>حاسبة الخمس الذكية</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #046A38;
+      --primary-light: #0a8a4d;
+      --accent-color: #D4AF37;
+      --bg-color: #f8f9fa;
+      --card-bg: #ffffff;
+      --text-main: #2b2b2b;
+      --text-muted: #6f6f6f;
+      --border-light: #d7d7d7;
+      --danger-bg: #ffebee;
+      --danger-color: #c62828;
+      --shadow-sm: 0 4px 6px rgba(0,0,0,0.05);
+      --shadow-md: 0 8px 24px rgba(4, 106, 56, 0.08);
+      --shadow-lg: 0 12px 32px rgba(4, 106, 56, 0.15);
+      --transition: 180ms ease;
+      --radius: 12px;
+    }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Tajawal', sans-serif;
-        }
+    * { box-sizing: border-box; }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            line-height: 1.6;
-            padding: 1rem 0.5rem;
-            display: flex;
-            justify-content: center;
-        }
+    html { scroll-behavior: smooth; }
 
-        .container {
-            width: 100%;
-            max-width: 500px;
-        }
+    body {
+      margin: 0;
+      font-family: 'Tajawal', sans-serif;
+      background: var(--bg-color);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding: 1rem 0.75rem 2rem;
+      display: flex;
+      justify-content: center;
+    }
 
-        .header { text-align: center; margin-bottom: 2rem; }
-        .header h1 { color: var(--primary-color); font-size: 2.2rem; margin-bottom: 0.5rem; }
-        .header p { color: var(--text-muted); font-size: 1rem; }
+    .container {
+      width: 100%;
+      max-width: 560px;
+    }
 
-        .card {
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            padding: 1.2rem;
-            margin-bottom: 1.5rem;
-            box-shadow: var(--shadow-sm);
-        }
+    .header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
 
-        .section-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 1.5rem;
-        }
+    .header h1 {
+      margin: 0;
+      color: var(--primary-color);
+      font-size: clamp(1.8rem, 5vw, 2.3rem);
+    }
 
-        .input-container {
-            position: relative;
-            margin-bottom: 1.2rem;
-            width: 100%;
-            animation: slideIn 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
-        }
+    .header p {
+      margin: 0.5rem 0 0;
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
 
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      padding: 1.2rem;
+      margin-bottom: 1.2rem;
+    }
 
-        .main-input {
-            width: 100%;
-            padding: 1rem 0.8rem;
-            padding-left: 2.5rem;
-            font-size: 1rem;
-            border: 1px solid var(--border-light);
-            border-radius: 8px;
-            background-color: transparent;
-            color: var(--text-main);
-            outline: none;
-            transition: var(--transition);
-        }
+    .section-title {
+      margin: 0 0 1rem;
+      color: var(--primary-color);
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
 
-        .main-input:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 4px rgba(4, 106, 56, 0.1);
-        }
+    .field,
+    .asset-field {
+      margin-bottom: 1rem;
+    }
 
-        .static-label {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-            font-size: 1rem;
-            pointer-events: none;
-            transition: var(--transition);
-            transform-origin: right center;
-            background-color: transparent;
-            padding: 0;
-            margin: 0;
-        }
+    .field:last-child,
+    .asset-field:last-child {
+      margin-bottom: 0;
+    }
 
-        input.floating-label {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-            font-size: 1rem;
-            transition: var(--transition);
-            transform-origin: right center;
-            background-color: transparent;
-            border: none;
-            outline: none;
-            font-family: inherit;
-            width: auto;
-            max-width: 80%;
-            pointer-events: auto;
-            cursor: text;
-        }
+    label {
+      display: block;
+      margin-bottom: 0.45rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
 
-        .main-input:focus ~ .static-label,
-        .main-input:not(:placeholder-shown) ~ .static-label,
-        .main-input:focus ~ input.floating-label,
-        .main-input:not(:placeholder-shown) ~ input.floating-label,
-        input.floating-label:focus {
-            top: 0;
-            transform: translateY(-50%) scale(0.85);
-            background-color: var(--card-bg);
-            padding: 0 3px;
-            color: var(--primary-color);
-        }
+    .hint {
+      margin-top: 0.35rem;
+      color: var(--text-muted);
+      font-size: 0.92rem;
+    }
 
-        input.floating-label:focus {
-            border-bottom: 1px dashed var(--primary-color);
-            color: var(--primary-light);
-        }
+    input[type="number"],
+    input[type="text"] {
+      width: 100%;
+      border: 1px solid var(--border-light);
+      border-radius: 10px;
+      padding: 0.95rem 0.9rem;
+      font-size: 1rem;
+      background: #fff;
+      color: var(--text-main);
+      transition: border-color var(--transition), box-shadow var(--transition), background-color var(--transition);
+    }
 
-        .delete-btn {
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: var(--danger-bg);
-            color: var(--danger-color);
-            border: none;
-            border-radius: 50%;
-            width: 28px;
-            height: 28px;
-            font-size: 1.4rem;
-            line-height: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: var(--transition);
-            opacity: 0;
-            pointer-events: none;
-            z-index: 10;
-        }
+    input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 4px rgba(4, 106, 56, 0.12);
+    }
 
-        .delete-btn:hover {
-            background: #ffcdd2;
-            transform: translateY(-50%) scale(1.1);
-        }
+    .asset-row {
+      border: 1px solid #ececec;
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 0.9rem;
+      background: #fcfcfc;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
 
-        .input-container:not(.ghost-row):not(.first-row) .delete-btn {
-            opacity: 1;
-            pointer-events: auto;
-        }
+    .asset-row-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-bottom: 0.8rem;
+    }
 
-        .ghost-row { opacity: 0.4; transition: opacity 0.3s; }
-        .ghost-row:hover { opacity: 0.6; }
-        .ghost-row .main-input {
-            border: 1px dashed var(--border-light);
-            background-color: #fafafa;
-        }
+    .asset-row-title {
+      margin: 0;
+      font-size: 1rem;
+      color: var(--primary-color);
+      font-weight: 700;
+    }
 
-        .results-card {
-            background: linear-gradient(135deg, var(--primary-color), #034f2a);
-            color: white;
-            box-shadow: var(--shadow-lg);
-            position: relative;
-            overflow: hidden;
-        }
+    .asset-grid {
+      display: grid;
+      gap: 0.8rem;
+    }
 
-        .result-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
+    .btn-row {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-top: 0.6rem;
+    }
 
-        .result-row:last-child {
-            border-bottom: none;
-            margin-top: 0.5rem;
-            padding-top: 1.5rem;
-        }
+    button {
+      font: inherit;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform var(--transition), background-color var(--transition), opacity var(--transition), box-shadow var(--transition);
+      min-height: 44px;
+    }
 
-        .result-label {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
+    button:hover { transform: translateY(-1px); }
+    button:active { transform: translateY(0); }
+    button:focus-visible {
+      outline: 2px solid var(--primary-color);
+      outline-offset: 3px;
+    }
 
-        .result-value {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--accent-color);
-        }
+    .btn-primary {
+      background: var(--primary-color);
+      color: #fff;
+      padding: 0.9rem 1.1rem;
+      box-shadow: var(--shadow-md);
+    }
 
-        .khums-highlight {
-            font-size: 1.8rem;
-            color: #fff;
-            background: var(--accent-color);
-            padding: 0.3rem 1rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
-        }
+    .btn-primary:hover { background: var(--primary-light); }
 
-        .no-khums-inline {
-            animation: fadeIn 0.4s ease forwards;
-        }
+    .btn-danger {
+      background: var(--danger-bg);
+      color: var(--danger-color);
+      padding: 0.7rem 0.95rem;
+    }
 
-        .no-khums-inline .result-label {
-            opacity: 0.95;
-        }
+    .results-card {
+      background: linear-gradient(135deg, var(--primary-color), #034f2a);
+      color: #fff;
+      box-shadow: var(--shadow-lg);
+    }
 
-        .no-khums-inline .result-value {
-            font-size: 1.15rem;
-            font-weight: 700;
-            color: #fff;
-        }
+    .result-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.9rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
+    .result-row:last-child { border-bottom: none; }
 
-        @media (max-width: 480px) {
-            .main-input { font-size: 1.05rem; padding-left: 2.5rem; }
-            .header h1 { font-size: 1.8rem; }
-        }
-    </style>
+    .result-label { opacity: 0.95; }
+
+    .result-value {
+      font-size: 1.18rem;
+      font-weight: 700;
+      color: var(--accent-color);
+      text-align: left;
+      direction: ltr;
+      unicode-bidi: plaintext;
+    }
+
+    .khums-highlight {
+      font-size: 1.55rem;
+      color: #fff;
+      background: var(--accent-color);
+      padding: 0.3rem 0.95rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(212,175,55,0.3);
+    }
+
+    .status-box {
+      margin-top: 0.4rem;
+      border-radius: 10px;
+      padding: 0.95rem 1rem;
+      font-weight: 600;
+      display: none;
+    }
+
+    .status-box.info {
+      display: block;
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+    }
+
+    .status-box.success {
+      display: block;
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (max-width: 480px) {
+      body { padding-inline: 0.55rem; }
+      .card { padding: 1rem; }
+      .result-row { align-items: flex-start; flex-direction: column; }
+      .result-value { text-align: right; }
+      .btn-row { flex-direction: column; }
+      .btn-primary { width: 100%; }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>حاسبة الخمس</h1>
+  <main class="container">
+    <header class="header">
+      <h1>حاسبة الخمس</h1>
+      <p>نسخة أوضح وأسهل استخدامًا مع دعم أفضل للوصول وإدخال الأصول.</p>
+    </header>
+
+    <section class="card" aria-labelledby="capital-title">
+      <h2 id="capital-title" class="section-title">رأس المال السابق</h2>
+      <div class="field">
+        <label for="prev-capital">رأس المال المخمس للسنة الفائتة</label>
+        <input type="number" id="prev-capital" inputmode="decimal" min="0" step="any" placeholder="مثال: 10000" aria-describedby="prev-capital-hint">
+        <p class="hint" id="prev-capital-hint">أدخل ما تبقى من رأس المال المخمس من السنة الماضية.</p>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="assets-title">
+      <h2 id="assets-title" class="section-title">أصول السنة الحالية</h2>
+      <div id="assets-container" aria-live="polite"></div>
+      <div class="btn-row">
+        <button type="button" id="add-asset-btn" class="btn-primary">إضافة أصل جديد</button>
+      </div>
+    </section>
+
+    <section class="card results-card" aria-labelledby="results-title">
+      <h2 id="results-title" class="section-title" style="color:#fff;">النتائج</h2>
+
+      <div class="result-row">
+        <span class="result-label">إجمالي الأصول الحالية</span>
+        <output class="result-value" id="res-total-wealth" for="prev-capital">0</output>
+      </div>
+
+      <div class="result-row">
+        <span class="result-label">الربح الصافي</span>
+        <output class="result-value" id="res-net-profit" for="prev-capital">0</output>
+      </div>
+
+      <div class="result-row" id="khums-row">
+        <span class="result-label">مقدار الخمس الواجب</span>
+        <output class="result-value khums-highlight" id="res-khums-due" for="prev-capital">0</output>
+      </div>
+
+      <div class="result-row">
+        <span class="result-label">رأس المال المخمس القادم</span>
+        <output class="result-value" style="color:#fff;" id="res-next-capital" for="prev-capital">0</output>
+      </div>
+
+      <div id="status-box" class="status-box info" aria-live="polite">
+        أدخل رأس المال والأصول لحساب الخمس.
+      </div>
+    </section>
+  </main>
+
+  <template id="asset-template">
+    <article class="asset-row">
+      <div class="asset-row-header">
+        <h3 class="asset-row-title"></h3>
+        <button type="button" class="btn-danger delete-btn">حذف</button>
+      </div>
+      <div class="asset-grid">
+        <div class="asset-field">
+          <label class="asset-name-label">اسم الأصل (اختياري)</label>
+          <input type="text" class="asset-name" placeholder="مثال: نقد، حساب بنكي، بضاعة">
         </div>
-
-        <div class="card">
-            <h2 class="section-title">رأس المال السابق</h2>
-            <div class="input-container">
-                <input type="number" id="prev-capital" class="main-input" placeholder=" " min="0">
-                <label for="prev-capital" class="static-label">رأس المال المخمس للسنة الفائتة</label>
-            </div>
+        <div class="asset-field">
+          <label class="asset-amount-label">قيمة الأصل</label>
+          <input type="number" class="asset-amount" inputmode="decimal" min="0" step="any" placeholder="0" />
         </div>
+      </div>
+    </article>
+  </template>
 
-        <div class="card">
-            <h2 class="section-title">أصول السنة الحالية</h2>
-            <div id="assets-container"></div>
-        </div>
+  <script>
+    const assetsContainer = document.getElementById('assets-container');
+    const addAssetBtn = document.getElementById('add-asset-btn');
+    const prevCapitalInput = document.getElementById('prev-capital');
+    const assetTemplate = document.getElementById('asset-template');
+    const statusBox = document.getElementById('status-box');
 
-        <div class="card results-card">
-            <div id="khums-details">
-                <div class="result-row">
-                    <span class="result-label">إجمالي الأصول الحالية</span>
-                    <span class="result-value" id="res-total-wealth">0</span>
-                </div>
-                <div class="result-row">
-                    <span class="result-label">الربح الصافي</span>
-                    <span class="result-value" id="res-net-profit">0</span>
-                </div>
+    let assetCounter = 0;
 
-                <div class="result-row" id="khums-row">
-                    <span class="result-label">مقدار الخمس الواجب</span>
-                    <span class="result-value khums-highlight" id="res-khums-due">0</span>
-                </div>
+    function formatNumber(value) {
+      return new Intl.NumberFormat('ar-SA-u-nu-latn', {
+        maximumFractionDigits: 2
+      }).format(value);
+    }
 
-                <div class="result-row no-khums-inline" id="no-khums-row" style="display: none;">
-                    <span class="result-label">الحالة</span>
-                    <span class="result-value">ليس عليك خمس لهذه السنة 🌿</span>
-                </div>
+    function parseValue(value) {
+      const parsed = parseFloat(value);
+      return Number.isFinite(parsed) ? parsed : 0;
+    }
 
-                <div class="result-row">
-                    <span class="result-label">رأس المال المخمس القادم</span>
-                    <span class="result-value" id="res-next-capital" style="color: white;">0</span>
-                </div>
-            </div>
-        </div>
-    </div>
+    function updateAssetLabels() {
+      const rows = [...assetsContainer.querySelectorAll('.asset-row')];
+      rows.forEach((row, index) => {
+        const rowNum = index + 1;
+        const title = row.querySelector('.asset-row-title');
+        const nameLabel = row.querySelector('.asset-name-label');
+        const amountLabel = row.querySelector('.asset-amount-label');
+        const nameInput = row.querySelector('.asset-name');
+        const amountInput = row.querySelector('.asset-amount');
+        const deleteBtn = row.querySelector('.delete-btn');
 
-    <script>
-        const assetsContainer = document.getElementById('assets-container');
-        const prevCapitalInput = document.getElementById('prev-capital');
-        let sourceCounter = 1;
+        const nameId = `asset-name-${rowNum}`;
+        const amountId = `asset-amount-${rowNum}`;
 
-        function init() {
-            assetsContainer.appendChild(createRow(false, true));
-            assetsContainer.appendChild(createRow(true, false));
-            prevCapitalInput.addEventListener('input', calculateKhums);
-            calculateKhums();
+        title.textContent = `الأصل ${rowNum}`;
+        nameLabel.setAttribute('for', nameId);
+        amountLabel.setAttribute('for', amountId);
+        nameInput.id = nameId;
+        amountInput.id = amountId;
+        amountInput.setAttribute('aria-describedby', 'results-title');
+        deleteBtn.setAttribute('aria-label', `حذف الأصل ${rowNum}`);
+      });
+    }
+
+    function addAssetRow({ name = '', amount = '' } = {}) {
+      const fragment = assetTemplate.content.cloneNode(true);
+      const row = fragment.querySelector('.asset-row');
+      const nameInput = row.querySelector('.asset-name');
+      const amountInput = row.querySelector('.asset-amount');
+      const deleteBtn = row.querySelector('.delete-btn');
+
+      assetCounter += 1;
+      nameInput.value = name;
+      amountInput.value = amount;
+
+      nameInput.addEventListener('input', calculateKhums);
+      amountInput.addEventListener('input', calculateKhums);
+
+      deleteBtn.addEventListener('click', () => {
+        row.remove();
+        updateAssetLabels();
+        if (assetsContainer.children.length === 0) {
+          addAssetRow();
         }
+        calculateKhums();
+      });
 
-        function formatCurrency(num) {
-            return num.toLocaleString('en-US');
-        }
+      assetsContainer.appendChild(fragment);
+      updateAssetLabels();
+      calculateKhums();
+    }
 
-        function createRow(isGhost = false, isFirst = false) {
-            const container = document.createElement('div');
-            container.className = `input-container ${isGhost ? 'ghost-row' : ''} ${isFirst ? 'first-row' : ''}`;
+    function calculateKhums() {
+      const prevCapital = parseValue(prevCapitalInput.value);
+      const rows = [...assetsContainer.querySelectorAll('.asset-row')];
+      const totalCurrentWealth = rows.reduce((sum, row) => {
+        const amount = parseValue(row.querySelector('.asset-amount').value);
+        return sum + amount;
+      }, 0);
 
-            const currentSourceNum = sourceCounter;
-            sourceCounter++;
+      const netProfit = totalCurrentWealth - prevCapital;
+      const khumsDue = netProfit > 0 ? netProfit / 5 : 0;
+      const nextCapital = totalCurrentWealth - khumsDue;
 
-            const amountInput = document.createElement('input');
-            amountInput.type = 'number';
-            amountInput.className = 'main-input asset-amount';
-            amountInput.placeholder = ' ';
-            amountInput.min = '0';
+      document.getElementById('res-total-wealth').textContent = formatNumber(totalCurrentWealth);
+      document.getElementById('res-net-profit').textContent = formatNumber(netProfit);
+      document.getElementById('res-khums-due').textContent = formatNumber(khumsDue);
+      document.getElementById('res-next-capital').textContent = formatNumber(nextCapital);
 
-            const nameInput = document.createElement('input');
-            nameInput.type = 'text';
-            nameInput.className = 'floating-label asset-name';
-            nameInput.value = `أصول ${currentSourceNum}`;
+      const hasPrevCapital = prevCapitalInput.value.trim() !== '';
+      const hasAnyAssetValue = rows.some(row => row.querySelector('.asset-amount').value.trim() !== '');
+      const hasAnyInput = hasPrevCapital || hasAnyAssetValue;
+      const khumsRow = document.getElementById('khums-row');
 
-            const deleteBtn = document.createElement('button');
-            deleteBtn.type = 'button';
-            deleteBtn.className = 'delete-btn';
-            deleteBtn.innerHTML = '−';
-            deleteBtn.tabIndex = -1;
+      if (!hasAnyInput) {
+        khumsRow.style.display = 'flex';
+        statusBox.className = 'status-box info';
+        statusBox.textContent = 'أدخل رأس المال والأصول لحساب الخمس.';
+        return;
+      }
 
-            deleteBtn.addEventListener('click', () => {
-                if (isFirst) return;
-                container.style.opacity = '0';
-                container.style.transform = 'translateY(-10px)';
-                setTimeout(() => {
-                    container.remove();
-                    calculateKhums();
-                }, 250);
-            });
+      if (netProfit <= 0) {
+        khumsRow.style.display = 'none';
+        statusBox.className = 'status-box success';
+        statusBox.textContent = 'ليس عليك خمس لهذه السنة 🌿';
+        return;
+      }
 
-            const adjustLabelWidth = () => {
-                let ruler = document.getElementById('text-ruler');
-                if (!ruler) {
-                    ruler = document.createElement('span');
-                    ruler.id = 'text-ruler';
-                    ruler.style.cssText = 'position:absolute; visibility:hidden; white-space:pre; font-size:1.1rem; font-family:"Tajawal", sans-serif;';
-                    document.body.appendChild(ruler);
-                }
-                ruler.textContent = nameInput.value || nameInput.placeholder;
-                nameInput.style.width = (ruler.offsetWidth + 12) + 'px';
-            };
+      khumsRow.style.display = 'flex';
+      statusBox.className = 'status-box info';
+      statusBox.textContent = 'تم حساب الخمس بناءً على الربح الصافي لهذه السنة.';
+    }
 
-            const handleActivation = () => {
-                if (container.classList.contains('ghost-row')) {
-                    container.classList.remove('ghost-row');
-                    assetsContainer.appendChild(createRow(true, false));
-                }
-                calculateKhums();
-            };
+    addAssetBtn.addEventListener('click', () => addAssetRow());
+    prevCapitalInput.addEventListener('input', calculateKhums);
 
-            nameInput.addEventListener('blur', () => {
-                if (nameInput.value.trim() === '') {
-                    nameInput.value = `أصول ${currentSourceNum}`;
-                    adjustLabelWidth();
-                }
-            });
-
-            amountInput.addEventListener('input', handleActivation);
-            nameInput.addEventListener('focus', () => {
-                nameInput.select();
-                handleActivation();
-            });
-            nameInput.addEventListener('input', handleActivation);
-            nameInput.addEventListener('input', adjustLabelWidth);
-            requestAnimationFrame(adjustLabelWidth);
-
-            container.appendChild(amountInput);
-            container.appendChild(nameInput);
-            container.appendChild(deleteBtn);
-
-            return container;
-        }
-
-        function calculateKhums() {
-            const prevCapital = parseFloat(prevCapitalInput.value) || 0;
-            let totalCurrentWealth = 0;
-
-            const rows = assetsContainer.querySelectorAll('.input-container:not(.ghost-row)');
-            rows.forEach(row => {
-                const amountInput = row.querySelector('.asset-amount');
-                const amount = parseFloat(amountInput.value) || 0;
-                totalCurrentWealth += amount;
-            });
-
-            const netProfit = totalCurrentWealth - prevCapital;
-            let khumsDue = 0;
-
-            if (netProfit > 0) {
-                khumsDue = netProfit / 5;
-            }
-
-            const nextCapital = totalCurrentWealth - khumsDue;
-            updateUI(totalCurrentWealth, netProfit, khumsDue, nextCapital);
-        }
-
-        function updateUI(totalCurrentWealth, netProfit, khumsDue, nextCapital) {
-            document.getElementById('res-total-wealth').innerText = formatCurrency(totalCurrentWealth);
-            document.getElementById('res-net-profit').innerText = formatCurrency(netProfit);
-            document.getElementById('res-khums-due').innerText = formatCurrency(khumsDue);
-            document.getElementById('res-next-capital').innerText = formatCurrency(nextCapital);
-
-            const khumsRow = document.getElementById('khums-row');
-            const noKhumsRow = document.getElementById('no-khums-row');
-
-            if (netProfit <= 0 && totalCurrentWealth > 0) {
-                khumsRow.style.display = 'none';
-                noKhumsRow.style.display = 'flex';
-            } else {
-                khumsRow.style.display = 'flex';
-                noKhumsRow.style.display = 'none';
-            }
-        }
-
-        init();
-    </script>
+    addAssetRow();
+  </script>
 </body>
 </html>
